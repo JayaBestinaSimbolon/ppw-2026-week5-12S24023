@@ -1,0 +1,959 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* ============================================================
+   SIPUS-Del — Sistem Informasi Perpustakaan Kampus Del
+   Primary Color: #4C1D95 (Violet-900)
+   ============================================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+    --sipus-primary:       #4C1D95;
+    --sipus-primary-light: #6D28D9;
+    --sipus-primary-pale:  #EDE9FE;
+    --sipus-primary-dark:  #3B0764;
+    --sipus-bg:            #F5F3FF;
+    --sipus-surface:       #FFFFFF;
+    --sipus-border:        #E5E7EB;
+    --sipus-text:          #1F2937;
+    --sipus-text-muted:    #6B7280;
+    --sipus-radius:        0.625rem;
+    --sipus-shadow:        0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.06);
+    --sipus-shadow-md:     0 4px 6px -1px rgba(76,29,149,0.1), 0 2px 4px -2px rgba(76,29,149,0.06);
+    --sipus-nav-height:    60px;
+}
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body.sipus-body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans, 'Instrument Sans', system-ui, sans-serif);
+    background-color: var(--sipus-bg);
+    color: var(--sipus-text);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.sipus-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--sipus-primary);
+    box-shadow: 0 2px 8px rgba(76,29,149,0.3);
+    height: var(--sipus-nav-height);
+}
+
+.sipus-navbar-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.sipus-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.sipus-brand-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.sipus-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.sipus-brand-name {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.sipus-brand-sub {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+}
+
+.sipus-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+}
+
+.sipus-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.4375rem 0.875rem;
+    border-radius: 0.5rem;
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sipus-nav-link:hover {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+}
+
+.sipus-nav-link.active {
+    background: rgba(255,255,255,0.18);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Mobile toggle */
+.sipus-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.375rem;
+}
+
+.sipus-nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.sipus-main {
+    flex: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1.75rem 1.5rem;
+}
+
+/* ============================================================
+   FLASH ALERTS
+   ============================================================ */
+.sipus-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--sipus-radius);
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.sipus-alert-success {
+    background: #ECFDF5;
+    color: #065F46;
+    border-color: #10B981;
+}
+
+.sipus-alert-error {
+    background: #FEF2F2;
+    color: #991B1B;
+    border-color: #EF4444;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.sipus-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sipus-page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sipus-primary-dark);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sipus-page-subtitle {
+    font-size: 0.875rem;
+    color: var(--sipus-text-muted);
+    margin: 0.25rem 0 0;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.sipus-card {
+    background: var(--sipus-surface);
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    box-shadow: var(--sipus-shadow);
+    padding: 1.375rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.sipus-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--sipus-border);
+}
+
+.sipus-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sipus-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.sipus-card-link {
+    font-size: 0.8125rem;
+    color: var(--sipus-primary-light);
+    text-decoration: none;
+    font-weight: 500;
+}
+.sipus-card-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   WELCOME CARD
+   ============================================================ */
+.sipus-welcome-card {
+    background: linear-gradient(135deg, var(--sipus-primary) 0%, var(--sipus-primary-light) 100%);
+    border-radius: var(--sipus-radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    box-shadow: var(--sipus-shadow-md);
+}
+
+.sipus-welcome-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.sipus-welcome-content h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem;
+}
+
+.sipus-welcome-content p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.82);
+    margin: 0 0 1.25rem;
+    max-width: 520px;
+    line-height: 1.6;
+}
+
+.sipus-welcome-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.sipus-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sipus-stat-card {
+    background: var(--sipus-surface);
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--sipus-shadow);
+    border-left: 4px solid;
+    transition: box-shadow 0.15s;
+}
+
+.sipus-stat-card:hover {
+    box-shadow: var(--sipus-shadow-md);
+}
+
+.sipus-stat-purple { border-left-color: var(--sipus-primary); }
+.sipus-stat-indigo { border-left-color: #4F46E5; }
+.sipus-stat-violet { border-left-color: #7C3AED; }
+.sipus-stat-rose   { border-left-color: #E11D48; }
+
+.sipus-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sipus-stat-purple .sipus-stat-icon { background: var(--sipus-primary-pale); color: var(--sipus-primary); }
+.sipus-stat-indigo .sipus-stat-icon { background: #EEF2FF; color: #4F46E5; }
+.sipus-stat-violet .sipus-stat-icon { background: #F5F3FF; color: #7C3AED; }
+.sipus-stat-rose   .sipus-stat-icon { background: #FFF1F2; color: #E11D48; }
+
+.sipus-stat-value {
+    font-size: 1.625rem;
+    font-weight: 800;
+    color: var(--sipus-text);
+    line-height: 1;
+}
+
+.sipus-stat-label {
+    font-size: 0.8rem;
+    color: var(--sipus-text-muted);
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* ============================================================
+   LIST ITEMS
+   ============================================================ */
+.sipus-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #F3F4F6;
+    gap: 1rem;
+}
+
+.sipus-list-item:last-child { border-bottom: none; }
+
+.sipus-list-item-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--sipus-text);
+    margin-bottom: 0.125rem;
+}
+
+.sipus-list-item-meta {
+    font-size: 0.8rem;
+    color: var(--sipus-text-muted);
+}
+
+.sipus-list-item-badges {
+    display: flex;
+    gap: 0.375rem;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.sipus-table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: -1.375rem -1.5rem;
+    padding: 0 1.5rem;
+}
+
+.sipus-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.sipus-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sipus-text-muted);
+    padding: 0.875rem 0.875rem;
+    border-bottom: 2px solid var(--sipus-border);
+    white-space: nowrap;
+    background: #FAFAFA;
+}
+
+.sipus-table td {
+    padding: 0.875rem 0.875rem;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+    color: var(--sipus-text);
+}
+
+.sipus-table tbody tr:last-child td { border-bottom: none; }
+
+.sipus-table tbody tr:hover td {
+    background: var(--sipus-primary-pale);
+}
+
+.text-center { text-align: center !important; }
+
+/* Table cell variants */
+.sipus-td-no    { width: 48px; color: var(--sipus-text-muted); font-size: 0.8rem; }
+.sipus-td-isbn  { font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--sipus-text-muted); white-space: nowrap; }
+.sipus-td-judul { min-width: 200px; }
+.sipus-td-aksi  { white-space: nowrap; }
+
+.sipus-judul    { font-weight: 600; color: var(--sipus-text); }
+.sipus-penerbit { font-size: 0.775rem; color: var(--sipus-text-muted); margin-top: 0.125rem; }
+.sipus-kategori-nama { font-size: 0.75rem; color: var(--sipus-text-muted); margin-top: 0.2rem; }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.sipus-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.sipus-badge-purple { background: var(--sipus-primary-pale); color: var(--sipus-primary); }
+.sipus-badge-green  { background: #DCFCE7; color: #15803D; }
+.sipus-badge-yellow { background: #FEF9C3; color: #854D0E; }
+.sipus-badge-red    { background: #FEE2E2; color: #B91C1C; }
+.sipus-badge-gray   { background: #F3F4F6; color: #6B7280; }
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+.sipus-action-group {
+    display: flex;
+    gap: 0.375rem;
+    align-items: center;
+}
+
+.sipus-btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3125rem 0.625rem;
+    border-radius: 6px;
+    font-size: 0.775rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.sipus-btn-sm:hover { opacity: 0.85; transform: translateY(-1px); }
+.sipus-btn-sm:active { transform: translateY(0); }
+
+.sipus-btn-sm-info    { background: #E0F2FE; color: #0369A1; }
+.sipus-btn-sm-warning { background: #FEF3C7; color: #92400E; }
+.sipus-btn-sm-danger  { background: #FEE2E2; color: #B91C1C; }
+
+/* ============================================================
+   BUTTONS (PRIMARY)
+   ============================================================ */
+.sipus-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.5625rem 1.125rem;
+    border-radius: var(--sipus-radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.sipus-btn-primary {
+    background: var(--sipus-primary);
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(76,29,149,0.3);
+}
+.sipus-btn-primary:hover {
+    background: var(--sipus-primary-light);
+    box-shadow: 0 4px 12px rgba(76,29,149,0.35);
+    transform: translateY(-1px);
+}
+
+.sipus-btn-danger {
+    background: #EF4444;
+    color: #ffffff;
+}
+.sipus-btn-danger:hover { background: #DC2626; transform: translateY(-1px); }
+
+.sipus-btn-outline {
+    background: transparent;
+    color: var(--sipus-primary);
+    border: 1.5px solid var(--sipus-primary);
+}
+.sipus-btn-outline:hover {
+    background: var(--sipus-primary-pale);
+}
+
+.sipus-btn-ghost {
+    background: transparent;
+    color: var(--sipus-text-muted);
+    border: 1.5px solid var(--sipus-border);
+}
+.sipus-btn-ghost:hover { background: #F9FAFB; color: var(--sipus-text); }
+
+.w-full { width: 100%; justify-content: center; }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.sipus-form-card { padding: 2rem; }
+.sipus-form-narrow { max-width: 540px; }
+
+.sipus-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.sipus-form-group { display: flex; flex-direction: column; gap: 0.375rem; }
+.sipus-form-group-full { grid-column: 1 / -1; }
+
+.sipus-label {
+    font-size: 0.8375rem;
+    font-weight: 600;
+    color: var(--sipus-text);
+}
+
+.sipus-required { color: #EF4444; }
+.sipus-optional { color: var(--sipus-text-muted); font-weight: 400; font-size: 0.8rem; }
+
+.sipus-input,
+.sipus-select,
+.sipus-textarea {
+    width: 100%;
+    padding: 0.5625rem 0.875rem;
+    border: 1.5px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--sipus-text);
+    background: var(--sipus-surface);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+}
+
+.sipus-input:focus,
+.sipus-select:focus,
+.sipus-textarea:focus {
+    border-color: var(--sipus-primary-light);
+    box-shadow: 0 0 0 3px rgba(109,40,217,0.1);
+}
+
+.sipus-input.is-invalid,
+.sipus-select.is-invalid,
+.sipus-textarea.is-invalid {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+}
+
+.sipus-textarea { resize: vertical; min-height: 110px; }
+.sipus-select { cursor: pointer; }
+
+.sipus-error {
+    font-size: 0.8rem;
+    color: #B91C1C;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.sipus-error::before { content: '⚠ '; }
+
+.sipus-hint { font-size: 0.775rem; color: var(--sipus-text-muted); margin: 0; }
+
+.sipus-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sipus-border);
+}
+
+/* ============================================================
+   DETAIL LAYOUT
+   ============================================================ */
+.sipus-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.sipus-detail-main {}
+
+.sipus-detail-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--sipus-border);
+}
+
+.sipus-detail-book-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--sipus-primary-pale);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sipus-primary);
+    flex-shrink: 0;
+}
+
+.sipus-detail-tag-icon {
+    background: #EDE9FE;
+    color: var(--sipus-primary);
+}
+
+.sipus-detail-title {
+    font-size: 1.3125rem;
+    font-weight: 700;
+    color: var(--sipus-text);
+    margin: 0 0 0.375rem;
+    line-height: 1.3;
+}
+
+.sipus-detail-penulis {
+    font-size: 0.9rem;
+    color: var(--sipus-text-muted);
+    margin: 0 0 0.625rem;
+}
+
+.sipus-detail-badges { display: flex; gap: 0.375rem; flex-wrap: wrap; }
+
+/* Info grid */
+.sipus-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    background: #FAFAFA;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.125rem;
+}
+
+.sipus-info-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sipus-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.sipus-info-value {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--sipus-text);
+}
+
+.sipus-mono { font-family: 'Courier New', monospace; font-size: 0.85rem; }
+
+/* Sinopsis */
+.sipus-sinopsis {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sipus-border);
+}
+
+.sipus-sinopsis-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sipus-text-muted);
+    margin-bottom: 0.625rem;
+}
+
+.sipus-sinopsis-text {
+    font-size: 0.925rem;
+    color: var(--sipus-text);
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* Sidebar */
+.sipus-detail-sidebar {}
+
+.sipus-sidebar-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--sipus-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--sipus-border);
+}
+
+.sipus-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.sipus-pagination {
+    padding: 1rem 0 0;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--sipus-border);
+    display: flex;
+    justify-content: center;
+}
+
+/* Override Laravel's default pagination */
+.sipus-pagination nav > div:first-child { display: none; }
+
+.sipus-pagination nav > div:last-child span,
+.sipus-pagination nav > div:last-child a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.375rem 0.75rem !important;
+    margin: 0 0.125rem !important;
+    border-radius: 6px !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: all 0.15s !important;
+    border: 1px solid var(--sipus-border) !important;
+    color: var(--sipus-text) !important;
+    background: white !important;
+}
+
+.sipus-pagination nav > div:last-child a:hover {
+    background: var(--sipus-primary-pale) !important;
+    border-color: var(--sipus-primary-light) !important;
+    color: var(--sipus-primary) !important;
+}
+
+.sipus-pagination nav > div:last-child span[aria-current="page"] {
+    background: var(--sipus-primary) !important;
+    border-color: var(--sipus-primary) !important;
+    color: white !important;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.sipus-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--sipus-text-muted);
+}
+
+.sipus-empty-state svg {
+    display: block;
+    margin: 0 auto 1rem;
+    color: #D1D5DB;
+}
+
+.sipus-empty-state p {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+}
+
+.sipus-empty-state a { color: var(--sipus-primary-light); text-decoration: underline; }
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+.sipus-link {
+    color: var(--sipus-primary-light);
+    text-decoration: none;
+    font-weight: 600;
+}
+.sipus-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.sipus-footer {
+    background: var(--sipus-primary-dark);
+    color: rgba(255,255,255,0.6);
+    padding: 1.25rem 1.5rem;
+    margin-top: auto;
+}
+
+.sipus-footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sipus-footer-inner p {
+    margin: 0;
+    font-size: 0.825rem;
+}
+
+.sipus-footer-inner strong { color: rgba(255,255,255,0.85); }
+
+.sipus-footer-sub {
+    font-size: 0.75rem !important;
+    margin-top: 0.25rem !important;
+    color: rgba(255,255,255,0.4) !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    .sipus-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sipus-detail-sidebar {
+        order: -1;
+    }
+
+    .sipus-sidebar-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sipus-sidebar-actions .sipus-btn {
+        flex: 1;
+    }
+
+    .sipus-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    :root { --sipus-nav-height: 56px; }
+
+    .sipus-main { padding: 1.25rem 1rem; }
+
+    .sipus-navbar-container { padding: 0 1rem; gap: 0; }
+
+    .sipus-nav-toggle { display: flex; }
+
+    .sipus-nav-links {
+        display: none;
+        position: absolute;
+        top: var(--sipus-nav-height);
+        left: 0;
+        right: 0;
+        background: var(--sipus-primary-dark);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem;
+        gap: 0.25rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .sipus-nav-links.open { display: flex; }
+
+    .sipus-nav-link { padding: 0.75rem 1rem; }
+
+    .sipus-welcome-card {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .sipus-welcome-icon { width: 52px; height: 52px; }
+
+    .sipus-form-grid { grid-template-columns: 1fr; }
+    .sipus-form-group-full { grid-column: 1; }
+
+    .sipus-page-header { flex-direction: column; align-items: flex-start; }
+
+    .sipus-stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .sipus-table-responsive {
+        margin: -1.375rem -1rem;
+        padding: 0 1rem;
+    }
+
+    .sipus-detail-header { flex-direction: column; }
+
+    .sipus-info-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+    .sipus-stats-grid { grid-template-columns: 1fr; }
+    .sipus-info-grid { grid-template-columns: 1fr; }
+    .sipus-form-actions { flex-direction: column-reverse; }
+    .sipus-form-actions .sipus-btn { width: 100%; justify-content: center; }
+    .sipus-welcome-actions { flex-direction: column; }
+    .sipus-welcome-actions .sipus-btn { width: 100%; justify-content: center; }
+}
