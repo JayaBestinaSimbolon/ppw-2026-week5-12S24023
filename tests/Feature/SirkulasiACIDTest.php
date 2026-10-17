@@ -295,4 +295,30 @@ class SirkulasiACIDTest extends TestCase
         $this->assertEquals(3, $stats['total_judul']);
         $this->assertEquals(1, $stats['sedang_dipinjam']);
     }
+
+    /**
+     * Uji 11: Pengembalian buku via form input Kode Pinjam (kembaliByKode) berhasil menambah stok.
+     */
+    public function test_pengembalian_buku_via_kode_pinjam(): void
+    {
+        $peminjaman = Peminjaman::create([
+            'kode_pinjam'         => 'PMJ-KODE-999',
+            'buku_id'             => $this->bukuTersedia->id,
+            'nim_peminjam'        => '12S24099',
+            'nama_peminjam'       => 'Test Kode Pinjam',
+            'tanggal_pinjam'      => now()->toDateString(),
+            'tanggal_jatuh_tempo' => now()->addDays(7)->toDateString(),
+            'status'              => 'dipinjam',
+        ]);
+
+        $stokAwal = $this->bukuTersedia->stok;
+
+        $response = $this->actingAs($this->pustakawan)->post(route('peminjaman.kembaliByKode'), [
+            'kode_pinjam' => 'PMJ-KODE-999',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertEquals('dikembalikan', $peminjaman->fresh()->status);
+        $this->assertEquals($stokAwal + 1, $this->bukuTersedia->fresh()->stok);
+    }
 }

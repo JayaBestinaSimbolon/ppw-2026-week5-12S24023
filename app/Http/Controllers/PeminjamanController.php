@@ -58,7 +58,10 @@ class PeminjamanController extends Controller
         // Daftar buku yang dapat dipilih untuk form peminjaman cepat
         $bukus = Buku::orderBy('judul')->get(['id', 'judul', 'stok', 'kode_rak', 'lantai']);
 
-        return view('peminjaman.index', compact('peminjamans', 'stats', 'bukus', 'status', 'q'));
+        // Daftar peminjaman aktif untuk formulir pengembalian cepat
+        $activeLoans = Peminjaman::with('buku')->where('status', 'dipinjam')->latest()->get();
+
+        return view('peminjaman.index', compact('peminjamans', 'stats', 'bukus', 'activeLoans', 'status', 'q'));
     }
 
     /**
@@ -195,5 +198,26 @@ class PeminjamanController extends Controller
             ]);
             return back()->with('error', 'Terjadi kesalahan sistem basis data saat memproses pengembalian buku.');
         }
+    }
+
+    /**
+     * Memproses pengembalian buku berdasarkan Kode Pinjam (form input pengembalian cepat).
+     */
+    public function kembaliByKode(Request $request)
+    {
+        $validated = $request->validate([
+            'kode_pinjam' => 'required|string',
+        ], [
+            'kode_pinjam.required' => 'Silakan masukkan atau pilih Kode Pinjam untuk pengembalian.',
+        ]);
+
+        $kodePinjam = strtoupper(trim($validated['kode_pinjam']));
+        $peminjaman = Peminjaman::where('kode_pinjam', $kodePinjam)->first();
+
+        if (!$peminjaman) {
+            return back()->withInput()->with('error', "Transaksi sirkulasi dengan kode '{$kodePinjam}' tidak ditemukan dalam database.");
+        }
+
+        return $this->kembali($request, $peminjaman->id);
     }
 }

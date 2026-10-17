@@ -63,5 +63,6 @@ Route::middleware('auth')->group(function () {
     // Sirkulasi Peminjaman & Pengembalian Buku (ACID & Concurrency Locking)
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
     Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+    Route::post('/peminjaman/kembali-by-kode', [PeminjamanController::class, 'kembaliByKode'])->name('peminjaman.kembaliByKode');
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
 });

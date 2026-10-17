@@ -1,12 +1,12 @@
-<x-layout title="Sirkulasi Peminjaman Buku">
+<x-layout title="Sirkulasi Peminjaman & Pengembalian Buku">
 
     <div class="sipus-container sipus-content-wrap">
         {{-- Header Halaman --}}
         <div class="sipus-page-header">
             <div>
-                <h1 class="sipus-page-title">Sirkulasi &amp; Peminjaman Buku</h1>
+                <h1 class="sipus-page-title">Sirkulasi: Peminjaman &amp; Pengembalian Buku</h1>
                 <p class="sipus-page-subtitle">
-                    Pencatatan sirkulasi peminjaman dan pengembalian koleksi buku berbasis transaksi ACID &amp; Concurrency Locking
+                    Modul sirkulasi terpadu: Peminjaman baru dan Pengembalian buku berbasis transaksi ACID (<code>DB::transaction()</code> &amp; <code>lockForUpdate()</code>)
                 </p>
             </div>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
@@ -174,6 +174,75 @@
                         </svg>
                         Proses Peminjaman (ACID)
                     </button>
+                </div>
+            </form>
+        </div>
+
+        {{-- Form Pengembalian Buku Cepat (ACID & Concurrency Safe) --}}
+        <div class="sipus-card" style="margin-bottom: 2rem; border-top: 4px solid var(--sipus-success);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20" style="color: var(--sipus-success);">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                    </svg>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0; color: var(--sipus-text);">
+                        Proses Pengembalian Buku (Pessimistic Lock &amp; Atomik)
+                    </h3>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--sipus-text-muted);">
+                    Tersedia <strong>{{ $activeLoans->count() }}</strong> transaksi buku yang sedang dipinjam
+                </span>
+            </div>
+
+            <form action="{{ route('peminjaman.kembaliByKode') }}" method="POST">
+                @csrf
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem; align-items: flex-end;">
+                    <div>
+                        <label for="select_kode_pinjam" class="sipus-filter-label" style="font-weight: 600;">
+                            Pilih Dari Transaksi Aktif Mahasiswa
+                        </label>
+                        <select id="select_kode_pinjam" class="sipus-input" onchange="if(this.value) document.getElementById('input_kode_pinjam').value = this.value;">
+                            <option value="">-- Pilih Transaksi yang Sedang Dipinjam --</option>
+                            @foreach ($activeLoans as $loan)
+                                <option value="{{ $loan->kode_pinjam }}">
+                                    {{ $loan->kode_pinjam }} &mdash; {{ $loan->nama_peminjam }} ({{ $loan->nim_peminjam }}) &mdash; {{ Str::limit($loan->buku?->judul, 25) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div style="font-size: 0.75rem; color: var(--sipus-text-muted); margin-top: 0.25rem;">
+                            Memilih opsi di atas akan otomatis mengisi kolom Kode Pinjam di samping.
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="input_kode_pinjam" class="sipus-filter-label" style="font-weight: 600;">
+                            Kode Pinjam Transaksi <span style="color: var(--sipus-danger);">*</span>
+                        </label>
+                        <input type="text"
+                               name="kode_pinjam"
+                               id="input_kode_pinjam"
+                               class="sipus-input"
+                               placeholder="Contoh: PMJ-20261015-001"
+                               value="{{ old('kode_pinjam') }}"
+                               style="font-family: monospace;"
+                               required>
+                        @error('kode_pinjam')
+                            <div style="font-size: 0.775rem; color: var(--sipus-danger); margin-top: 0.25rem;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <button type="submit" class="sipus-btn sipus-btn-primary w-full" style="background: var(--sipus-success); border-color: var(--sipus-success); padding: 0.65rem 1rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                            </svg>
+                            Proses Pengembalian (ACID)
+                        </button>
+                    </div>
+                </div>
+
+                <div style="font-size: 0.8rem; color: var(--sipus-text-muted);">
+                    * Pengembalian juga dapat dilakukan secara <strong>1-klik</strong> langsung melalui tombol kuning <em>"Kembalikan Buku"</em> pada tabel di bawah.
                 </div>
             </form>
         </div>
