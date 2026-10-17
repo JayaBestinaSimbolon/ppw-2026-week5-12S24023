@@ -4,39 +4,67 @@
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* ============================================================
-   SIPUS-Del — Sistem Informasi Perpustakaan Kampus Del
-   Primary Color: #4C1D95 (Violet-900)
+   SIPUS-Del — Sistem Informasi Perpustakaan Institut Teknologi Del
+   Konsep: Modern Academic Library Website
+   Palet Warna Wajib:
+     - Ungu Utama:     #4C1D95
+     - Ungu Pendukung: #6D28D9
+     - Putih:          #FFFFFF
+     - Abu-abu Latar:  #F8FAFC
+     - Abu-abu Teks:   #1F2937
    ============================================================ */
 
-/* ---- CSS Variables ---- */
 :root {
-    --sipus-primary:       #4C1D95;
-    --sipus-primary-light: #6D28D9;
-    --sipus-primary-pale:  #EDE9FE;
-    --sipus-primary-dark:  #3B0764;
-    --sipus-bg:            #F5F3FF;
-    --sipus-surface:       #FFFFFF;
-    --sipus-border:        #E5E7EB;
-    --sipus-text:          #1F2937;
-    --sipus-text-muted:    #6B7280;
-    --sipus-radius:        0.625rem;
-    --sipus-shadow:        0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.06);
-    --sipus-shadow-md:     0 4px 6px -1px rgba(76,29,149,0.1), 0 2px 4px -2px rgba(76,29,149,0.06);
-    --sipus-nav-height:    60px;
+    --sipus-primary:        #4C1D95;
+    --sipus-primary-light:  #6D28D9;
+    --sipus-primary-hover:  #5B21B6;
+    --sipus-primary-pale:   #EDE9FE;
+    --sipus-primary-subtle: #F5F3FF;
+    --sipus-primary-dark:   #2E1065;
+    
+    --sipus-bg:             #F8FAFC;
+    --sipus-surface:        #FFFFFF;
+    --sipus-border:         #E2E8F0;
+    --sipus-border-subtle:  #F1F5F9;
+    
+    --sipus-text:           #1F2937;
+    --sipus-text-muted:     #64748B;
+    --sipus-text-light:     #94A3B8;
+
+    --sipus-success:        #059669;
+    --sipus-success-bg:     #ECFDF5;
+    --sipus-warning:        #D97706;
+    --sipus-warning-bg:     #FFFBEB;
+    --sipus-danger:         #DC2626;
+    --sipus-danger-bg:      #FEF2F2;
+    --sipus-info:           #0284C7;
+    --sipus-info-bg:        #F0F9FF;
+    
+    --sipus-radius-sm:      0.375rem;
+    --sipus-radius:         0.75rem;
+    --sipus-radius-lg:      1rem;
+    --sipus-radius-full:    9999px;
+    
+    --sipus-shadow-sm:      0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --sipus-shadow:         0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --sipus-shadow-md:      0 10px 15px -3px rgba(76, 29, 149, 0.08), 0 4px 6px -4px rgba(76, 29, 149, 0.04);
+    --sipus-shadow-lg:      0 20px 25px -5px rgba(76, 29, 149, 0.12), 0 8px 10px -6px rgba(76, 29, 149, 0.08);
+
+    --sipus-nav-height:     72px;
 }
 
-/* ---- Reset & Base ---- */
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
 body.sipus-body {
     margin: 0;
     padding: 0;
-    font-family: var(--font-sans, 'Instrument Sans', system-ui, sans-serif);
+    font-family: var(--font-sans);
     background-color: var(--sipus-bg);
     color: var(--sipus-text);
     font-size: 0.9375rem;
@@ -44,366 +72,1117 @@ body.sipus-body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ============================================================
-   NAVBAR
+   TOP UTILITY BAR (Academic feel inspired by ITB Library)
    ============================================================ */
-.sipus-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: var(--sipus-primary);
-    box-shadow: 0 2px 8px rgba(76,29,149,0.3);
-    height: var(--sipus-nav-height);
+.sipus-topbar {
+    background-color: #3B137B;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.775rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.sipus-navbar-container {
+.sipus-topbar-inner {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 1.5rem;
-    height: 100%;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sipus-topbar-left, .sipus-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.sipus-topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.sipus-topbar-item:hover {
+    color: #ffffff;
+}
+
+/* ============================================================
+   HEADER & NAVBAR (3 Balanced Sections: Logo Left, Menu Center, User Right)
+   ============================================================ */
+.sipus-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-bottom: 1px solid var(--sipus-border);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.sipus-header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: var(--sipus-nav-height);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 2rem;
 }
 
+/* A. Logo di sebelah kiri */
 .sipus-brand {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.75rem;
     text-decoration: none;
     flex-shrink: 0;
 }
 
 .sipus-brand-icon {
-    width: 36px;
-    height: 36px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--sipus-primary) 0%, var(--sipus-primary-light) 100%);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
+    box-shadow: 0 4px 8px rgba(76, 29, 149, 0.25);
     flex-shrink: 0;
 }
 
 .sipus-brand-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.1;
+    line-height: 1.15;
 }
 
 .sipus-brand-name {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: -0.01em;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--sipus-primary);
+    letter-spacing: -0.02em;
 }
 
 .sipus-brand-sub {
-    font-size: 0.6875rem;
-    color: rgba(255,255,255,0.65);
-    font-weight: 400;
-}
-
-.sipus-nav-links {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-left: auto;
-}
-
-.sipus-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.4375rem;
-    padding: 0.4375rem 0.875rem;
-    border-radius: 0.5rem;
-    color: rgba(255,255,255,0.78);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background 0.15s ease, color 0.15s ease;
-}
-
-.sipus-nav-link:hover {
-    background: rgba(255,255,255,0.12);
-    color: #ffffff;
-}
-
-.sipus-nav-link.active {
-    background: rgba(255,255,255,0.18);
-    color: #ffffff;
-    font-weight: 600;
-}
-
-/* Mobile toggle */
-.sipus-nav-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    margin-left: auto;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.375rem;
-}
-
-.sipus-nav-toggle span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: rgba(255,255,255,0.8);
-    border-radius: 2px;
-    transition: all 0.2s;
-}
-
-/* ============================================================
-   MAIN CONTENT
-   ============================================================ */
-.sipus-main {
-    flex: 1;
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 1.75rem 1.5rem;
-}
-
-/* ============================================================
-   FLASH ALERTS
-   ============================================================ */
-.sipus-alert {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.875rem 1.125rem;
-    border-radius: var(--sipus-radius);
-    margin-bottom: 1.25rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-left: 4px solid;
-}
-
-.sipus-alert-success {
-    background: #ECFDF5;
-    color: #065F46;
-    border-color: #10B981;
-}
-
-.sipus-alert-error {
-    background: #FEF2F2;
-    color: #991B1B;
-    border-color: #EF4444;
-}
-
-/* ============================================================
-   PAGE HEADER
-   ============================================================ */
-.sipus-page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.sipus-page-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--sipus-primary-dark);
-    margin: 0;
-    line-height: 1.2;
-}
-
-.sipus-page-subtitle {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     color: var(--sipus-text-muted);
-    margin: 0.25rem 0 0;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-/* ============================================================
-   CARD
-   ============================================================ */
-.sipus-card {
-    background: var(--sipus-surface);
-    border: 1px solid var(--sipus-border);
-    border-radius: var(--sipus-radius);
-    box-shadow: var(--sipus-shadow);
-    padding: 1.375rem 1.5rem;
-    margin-bottom: 1.25rem;
-}
-
-.sipus-card-header {
+/* B. Navigasi tepat di tengah */
+.sipus-nav-center {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-    margin-bottom: 0.25rem;
-    border-bottom: 1px solid var(--sipus-border);
+    justify-content: center;
 }
 
-.sipus-card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--sipus-primary);
+.sipus-nav-menu {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    list-style: none;
     margin: 0;
+    padding: 0;
 }
 
-.sipus-card-link {
-    font-size: 0.8125rem;
-    color: var(--sipus-primary-light);
+.sipus-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--sipus-radius-sm);
+    color: #475569;
     text-decoration: none;
-    font-weight: 500;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    position: relative;
 }
-.sipus-card-link:hover { text-decoration: underline; }
+
+.sipus-nav-link:hover {
+    color: var(--sipus-primary);
+    background-color: var(--sipus-primary-subtle);
+}
+
+.sipus-nav-link.active {
+    color: var(--sipus-primary);
+    background-color: var(--sipus-primary-pale);
+    font-weight: 700;
+}
+
+.sipus-nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--sipus-primary);
+    border-radius: 3px 3px 0 0;
+}
+
+/* C. Area Pengguna di sebelah kanan */
+.sipus-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.sipus-btn-nav-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--sipus-radius-sm);
+    background: var(--sipus-primary-subtle);
+    color: var(--sipus-primary);
+    border: 1px solid var(--sipus-primary-pale);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.sipus-btn-nav-login:hover {
+    background: var(--sipus-primary);
+    color: #ffffff;
+    border-color: var(--sipus-primary);
+    box-shadow: var(--sipus-shadow-sm);
+}
+
+.sipus-btn-nav-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--sipus-radius-sm);
+    background: var(--sipus-primary);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.sipus-btn-nav-admin:hover {
+    background: var(--sipus-primary-light);
+}
+
+/* D. Mobile Toggle */
+.sipus-mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--sipus-text);
+}
+
+.sipus-mobile-menu {
+    display: none;
+}
 
 /* ============================================================
-   WELCOME CARD
+   MAIN CONTAINER
    ============================================================ */
-.sipus-welcome-card {
-    background: linear-gradient(135deg, var(--sipus-primary) 0%, var(--sipus-primary-light) 100%);
-    border-radius: var(--sipus-radius);
-    padding: 2rem;
+.sipus-main {
+    flex: 1;
+    width: 100%;
+}
+
+.sipus-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.sipus-content-wrap {
+    padding: 2.25rem 0;
+}
+
+/* ============================================================
+   HERO SECTION (Beranda - Modern Academic Library)
+   ============================================================ */
+.sipus-hero {
+    position: relative;
+    background: linear-gradient(135deg, #2E1065 0%, #4C1D95 50%, #6D28D9 100%);
+    color: #ffffff;
+    padding: 4.5rem 0 5rem;
+    overflow: hidden;
+}
+
+.sipus-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(237, 233, 254, 0.12) 0%, transparent 45%);
+    pointer-events: none;
+}
+
+.sipus-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sipus-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 0.35rem 0.95rem;
+    border-radius: var(--sipus-radius-full);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     margin-bottom: 1.5rem;
+}
+
+.sipus-hero-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.18;
+    color: #ffffff;
+    margin: 0 0 1.25rem;
+    letter-spacing: -0.025em;
+}
+
+.sipus-hero-desc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    margin: 0 auto 2rem;
+    max-width: 720px;
+}
+
+.sipus-hero-actions {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   SEARCH BAR COMPONENT
+   ============================================================ */
+.sipus-search-box {
+    max-width: 760px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: var(--sipus-radius-lg);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    padding: 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sipus-search-icon {
+    padding-left: 0.85rem;
+    color: var(--sipus-primary);
+    display: flex;
+    align-items: center;
+}
+
+.sipus-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--sipus-text);
+    padding: 0.65rem 0.5rem;
+    background: transparent;
+}
+
+.sipus-search-input::placeholder {
+    color: var(--sipus-text-muted);
+}
+
+.sipus-search-btn {
+    background: var(--sipus-primary);
+    color: #ffffff;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--sipus-radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sipus-search-btn:hover {
+    background: var(--sipus-primary-light);
+}
+
+/* ============================================================
+   STATISTICS SECTION
+   ============================================================ */
+.sipus-stats-band {
+    margin-top: -2.5rem;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 3.5rem;
+}
+
+.sipus-stats-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.25rem;
+}
+
+.sipus-stat-item {
+    background: #ffffff;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.35rem 1.5rem;
+    box-shadow: var(--sipus-shadow);
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sipus-stat-item:hover {
+    transform: translateY(-2px);
     box-shadow: var(--sipus-shadow-md);
 }
 
-.sipus-welcome-icon {
-    width: 64px;
-    height: 64px;
-    background: rgba(255,255,255,0.15);
+.sipus-stat-icon-wrapper {
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
     flex-shrink: 0;
 }
 
-.sipus-welcome-content h2 {
-    font-size: 1.375rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 0.5rem;
+.sipus-stat-icon-purple {
+    background: var(--sipus-primary-pale);
+    color: var(--sipus-primary);
 }
 
-.sipus-welcome-content p {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.82);
-    margin: 0 0 1.25rem;
-    max-width: 520px;
-    line-height: 1.6;
+.sipus-stat-icon-blue {
+    background: #E0F2FE;
+    color: #0284C7;
 }
 
-.sipus-welcome-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+.sipus-stat-icon-green {
+    background: #DCFCE7;
+    color: #16A34A;
+}
+
+.sipus-stat-icon-amber {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.sipus-stat-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--sipus-text);
+    line-height: 1.1;
+}
+
+.sipus-stat-title {
+    font-size: 0.8125rem;
+    color: var(--sipus-text-muted);
+    font-weight: 500;
+    margin-top: 0.2rem;
 }
 
 /* ============================================================
-   STAT CARDS
+   SECTION HEADERS
    ============================================================ */
-.sipus-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.sipus-section {
+    margin-bottom: 4rem;
 }
 
-.sipus-stat-card {
-    background: var(--sipus-surface);
+.sipus-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--sipus-border);
+    padding-bottom: 0.85rem;
+}
+
+.sipus-section-tag {
+    font-size: 0.775rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sipus-primary-light);
+    margin-bottom: 0.25rem;
+}
+
+.sipus-section-title {
+    font-size: 1.625rem;
+    font-weight: 800;
+    color: var(--sipus-primary-dark);
+    margin: 0;
+    letter-spacing: -0.015em;
+}
+
+.sipus-section-subtitle {
+    font-size: 0.9rem;
+    color: var(--sipus-text-muted);
+    margin: 0.35rem 0 0;
+}
+
+.sipus-section-more {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sipus-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.15s;
+}
+
+.sipus-section-more:hover {
+    color: var(--sipus-primary-light);
+}
+
+/* ============================================================
+   SERVICES SECTION (4 Kartu Layanan Wajib)
+   ============================================================ */
+.sipus-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.sipus-service-card {
+    background: #ffffff;
     border: 1px solid var(--sipus-border);
     border-radius: var(--sipus-radius);
-    padding: 1.25rem;
+    padding: 1.75rem;
+    box-shadow: var(--sipus-shadow);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sipus-service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--sipus-border);
+    transition: background 0.2s ease;
+}
+
+.sipus-service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sipus-shadow-md);
+    border-color: var(--sipus-primary-pale);
+}
+
+.sipus-service-card:hover::before {
+    background: linear-gradient(90deg, var(--sipus-primary) 0%, var(--sipus-primary-light) 100%);
+}
+
+.sipus-service-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--sipus-primary-subtle);
+    color: var(--sipus-primary);
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.sipus-service-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--sipus-text);
+    margin: 0 0 0.5rem;
+}
+
+.sipus-service-desc {
+    font-size: 0.875rem;
+    color: var(--sipus-text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    flex: 1;
+}
+
+.sipus-service-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    background: var(--sipus-primary-subtle);
+    color: var(--sipus-primary);
+    border: 1px solid var(--sipus-primary-pale);
+    border-radius: var(--sipus-radius-sm);
+    font-size: 0.825rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.sipus-service-btn:hover {
+    background: var(--sipus-primary);
+    color: #ffffff;
+    border-color: var(--sipus-primary);
+}
+
+/* ============================================================
+   BOOK CARDS (Katalog & Beranda)
+   ============================================================ */
+.sipus-book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.sipus-book-card {
+    background: #ffffff;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.35rem;
     box-shadow: var(--sipus-shadow);
-    border-left: 4px solid;
-    transition: box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
 }
 
-.sipus-stat-card:hover {
+.sipus-book-card:hover {
+    transform: translateY(-3px);
     box-shadow: var(--sipus-shadow-md);
+    border-color: #CBD5E1;
 }
 
-.sipus-stat-purple { border-left-color: var(--sipus-primary); }
-.sipus-stat-indigo { border-left-color: #4F46E5; }
-.sipus-stat-violet { border-left-color: #7C3AED; }
-.sipus-stat-rose   { border-left-color: #E11D48; }
+.sipus-book-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
 
-.sipus-stat-icon {
-    width: 44px;
-    height: 44px;
+.sipus-book-collection-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--sipus-radius-full);
+    font-size: 0.725rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.sipus-badge-pelajaran {
+    background: #E0E7FF;
+    color: #3730A3;
+}
+
+.sipus-badge-skripsi {
+    background: #FCE7F3;
+    color: #9D174D;
+}
+
+.sipus-book-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--sipus-text);
+    margin: 0 0 0.4rem;
+    line-height: 1.35;
+}
+
+.sipus-book-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.sipus-book-title a:hover {
+    color: var(--sipus-primary);
+}
+
+.sipus-book-author {
+    font-size: 0.825rem;
+    color: var(--sipus-text-muted);
+    margin-bottom: 0.85rem;
+}
+
+/* Lokasi Lantai & Rak Box */
+.sipus-location-box {
+    background: #F8FAFC;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius-sm);
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.sipus-location-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #334155;
+    font-weight: 600;
+}
+
+.sipus-location-item svg {
+    color: var(--sipus-primary);
+    flex-shrink: 0;
+}
+
+.sipus-location-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--sipus-border);
+}
+
+.sipus-book-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--sipus-border-subtle);
+    font-size: 0.8125rem;
+}
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+.sipus-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--sipus-radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.sipus-status-available {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.sipus-status-empty {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.sipus-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.sipus-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--sipus-radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.sipus-btn-primary {
+    background: var(--sipus-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(76, 29, 149, 0.2);
+}
+
+.sipus-btn-primary:hover {
+    background: var(--sipus-primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(76, 29, 149, 0.3);
+}
+
+.sipus-btn-white {
+    background: #ffffff;
+    color: var(--sipus-primary);
+    box-shadow: var(--sipus-shadow);
+}
+
+.sipus-btn-white:hover {
+    background: #F5F3FF;
+    transform: translateY(-1px);
+}
+
+.sipus-btn-outline {
+    background: transparent;
+    color: var(--sipus-primary);
+    border: 1.5px solid var(--sipus-primary);
+}
+
+.sipus-btn-outline:hover {
+    background: var(--sipus-primary-pale);
+}
+
+.sipus-btn-outline-white {
+    background: transparent;
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.sipus-btn-outline-white:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+.sipus-btn-ghost {
+    background: transparent;
+    color: var(--sipus-text-muted);
+    border: 1px solid var(--sipus-border);
+}
+
+.sipus-btn-ghost:hover {
+    background: #F1F5F9;
+    color: var(--sipus-text);
+}
+
+.sipus-btn-danger {
+    background: var(--sipus-danger);
+    color: #ffffff;
+}
+
+.sipus-btn-danger:hover {
+    background: #B91C1C;
+}
+
+.sipus-btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--sipus-radius-sm);
+    font-size: 0.775rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sipus-btn-sm-info    { background: #E0F2FE; color: #0369A1; }
+.sipus-btn-sm-warning { background: #FEF3C7; color: #92400E; }
+.sipus-btn-sm-danger  { background: #FEE2E2; color: #B91C1C; }
+
+/* ============================================================
+   CATEGORY PILLS & CARDS
+   ============================================================ */
+.sipus-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1rem;
+}
+
+.sipus-category-card {
+    background: #ffffff;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.15rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+.sipus-category-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--sipus-primary-light);
+    box-shadow: var(--sipus-shadow);
+}
+
+.sipus-category-icon {
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
+    background: var(--sipus-primary-subtle);
+    color: var(--sipus-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-.sipus-stat-purple .sipus-stat-icon { background: var(--sipus-primary-pale); color: var(--sipus-primary); }
-.sipus-stat-indigo .sipus-stat-icon { background: #EEF2FF; color: #4F46E5; }
-.sipus-stat-violet .sipus-stat-icon { background: #F5F3FF; color: #7C3AED; }
-.sipus-stat-rose   .sipus-stat-icon { background: #FFF1F2; color: #E11D48; }
-
-.sipus-stat-value {
-    font-size: 1.625rem;
-    font-weight: 800;
+.sipus-category-name {
+    font-size: 0.9rem;
+    font-weight: 700;
     color: var(--sipus-text);
-    line-height: 1;
+    line-height: 1.25;
 }
 
-.sipus-stat-label {
-    font-size: 0.8rem;
+.sipus-category-count {
+    font-size: 0.75rem;
     color: var(--sipus-text-muted);
-    margin-top: 0.25rem;
-    font-weight: 500;
 }
 
 /* ============================================================
-   LIST ITEMS
+   KATALOG PAGE & FILTER SIDEBAR
    ============================================================ */
-.sipus-list-item {
+.sipus-catalog-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.sipus-filter-card {
+    background: #ffffff;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    padding: 1.5rem;
+    box-shadow: var(--sipus-shadow);
+    position: sticky;
+    top: 90px;
+}
+
+.sipus-filter-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sipus-primary-dark);
+    margin: 0 0 1.25rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #F3F4F6;
-    gap: 1rem;
 }
 
-.sipus-list-item:last-child { border-bottom: none; }
-
-.sipus-list-item-title {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--sipus-text);
-    margin-bottom: 0.125rem;
+.sipus-filter-group {
+    margin-bottom: 1.25rem;
 }
 
-.sipus-list-item-meta {
+.sipus-filter-label {
     font-size: 0.8rem;
-    color: var(--sipus-text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #475569;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
-.sipus-list-item-badges {
+/* ============================================================
+   FORMS
+   ============================================================ */
+.sipus-card {
+    background: #ffffff;
+    border: 1px solid var(--sipus-border);
+    border-radius: var(--sipus-radius);
+    box-shadow: var(--sipus-shadow);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.sipus-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.sipus-form-group {
     display: flex;
-    gap: 0.375rem;
-    flex-shrink: 0;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.sipus-form-group-full {
+    grid-column: 1 / -1;
+}
+
+.sipus-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sipus-text);
+}
+
+.sipus-required { color: var(--sipus-danger); }
+.sipus-optional { color: var(--sipus-text-muted); font-size: 0.8rem; font-weight: normal; }
+
+.sipus-input, .sipus-select, .sipus-textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--sipus-border);
+    border-radius: var(--sipus-radius-sm);
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--sipus-text);
+    background: #ffffff;
+    transition: all 0.15s ease;
+    outline: none;
+}
+
+.sipus-input:focus, .sipus-select:focus, .sipus-textarea:focus {
+    border-color: var(--sipus-primary-light);
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+}
+
+.sipus-input.is-invalid, .sipus-select.is-invalid, .sipus-textarea.is-invalid {
+    border-color: var(--sipus-danger);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.sipus-error {
+    font-size: 0.8rem;
+    color: var(--sipus-danger);
+    font-weight: 500;
+}
+
+.sipus-hint {
+    font-size: 0.785rem;
+    color: var(--sipus-text-muted);
+    margin: 0;
+}
+
+.sipus-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sipus-border);
+}
+
+/* ============================================================
+   LOCATION DETAIL HIGHLIGHT BOX (Fitur Kunci Sesuai Prompt)
+   ============================================================ */
+.sipus-location-banner {
+    background: linear-gradient(135deg, #FAF5FF 0%, #EDE9FE 100%);
+    border: 2px solid #DDD6FE;
+    border-radius: var(--sipus-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.sipus-location-banner-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--sipus-primary);
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sipus-location-banner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sipus-location-banner-item {
+    background: #ffffff;
+    border-radius: var(--sipus-radius-sm);
+    padding: 0.85rem 1rem;
+    border: 1px solid #E9D5FF;
+}
+
+.sipus-location-banner-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--sipus-text-muted);
+    margin-bottom: 0.2rem;
+}
+
+.sipus-location-banner-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--sipus-primary-dark);
+}
+
+.sipus-location-instruction {
+    background: #ffffff;
+    border-left: 4px solid var(--sipus-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--sipus-radius-sm) var(--sipus-radius-sm) 0;
+    font-size: 0.875rem;
+    color: #4C1D95;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ============================================================
+   TURNITIN SUBMISSION STYLING
+   ============================================================ */
+.sipus-turnitin-banner {
+    background: linear-gradient(135deg, var(--sipus-primary) 0%, #3B0764 100%);
+    color: #ffffff;
+    border-radius: var(--sipus-radius-lg);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--sipus-shadow-md);
+}
+
+.sipus-turnitin-banner h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+}
+
+.sipus-turnitin-banner p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    max-width: 680px;
+    line-height: 1.6;
 }
 
 /* ============================================================
@@ -412,8 +1191,6 @@ body.sipus-body {
 .sipus-table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: -1.375rem -1.5rem;
-    padding: 0 1.5rem;
 }
 
 .sipus-table {
@@ -429,386 +1206,120 @@ body.sipus-body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--sipus-text-muted);
-    padding: 0.875rem 0.875rem;
+    padding: 0.85rem 1rem;
     border-bottom: 2px solid var(--sipus-border);
+    background: #F8FAFC;
     white-space: nowrap;
-    background: #FAFAFA;
 }
 
 .sipus-table td {
-    padding: 0.875rem 0.875rem;
-    border-bottom: 1px solid #F3F4F6;
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--sipus-border-subtle);
     vertical-align: middle;
-    color: var(--sipus-text);
 }
-
-.sipus-table tbody tr:last-child td { border-bottom: none; }
 
 .sipus-table tbody tr:hover td {
-    background: var(--sipus-primary-pale);
+    background: #FAF5FF;
 }
-
-.text-center { text-align: center !important; }
-
-/* Table cell variants */
-.sipus-td-no    { width: 48px; color: var(--sipus-text-muted); font-size: 0.8rem; }
-.sipus-td-isbn  { font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--sipus-text-muted); white-space: nowrap; }
-.sipus-td-judul { min-width: 200px; }
-.sipus-td-aksi  { white-space: nowrap; }
-
-.sipus-judul    { font-weight: 600; color: var(--sipus-text); }
-.sipus-penerbit { font-size: 0.775rem; color: var(--sipus-text-muted); margin-top: 0.125rem; }
-.sipus-kategori-nama { font-size: 0.75rem; color: var(--sipus-text-muted); margin-top: 0.2rem; }
 
 /* ============================================================
-   BADGES
+   ALERTS
    ============================================================ */
-.sipus-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.2rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-    text-transform: uppercase;
-}
-
-.sipus-badge-purple { background: var(--sipus-primary-pale); color: var(--sipus-primary); }
-.sipus-badge-green  { background: #DCFCE7; color: #15803D; }
-.sipus-badge-yellow { background: #FEF9C3; color: #854D0E; }
-.sipus-badge-red    { background: #FEE2E2; color: #B91C1C; }
-.sipus-badge-gray   { background: #F3F4F6; color: #6B7280; }
-
-/* ============================================================
-   ACTION BUTTONS
-   ============================================================ */
-.sipus-action-group {
-    display: flex;
-    gap: 0.375rem;
-    align-items: center;
-}
-
-.sipus-btn-sm {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.3125rem 0.625rem;
-    border-radius: 6px;
-    font-size: 0.775rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: opacity 0.15s, transform 0.1s;
-}
-
-.sipus-btn-sm:hover { opacity: 0.85; transform: translateY(-1px); }
-.sipus-btn-sm:active { transform: translateY(0); }
-
-.sipus-btn-sm-info    { background: #E0F2FE; color: #0369A1; }
-.sipus-btn-sm-warning { background: #FEF3C7; color: #92400E; }
-.sipus-btn-sm-danger  { background: #FEE2E2; color: #B91C1C; }
-
-/* ============================================================
-   BUTTONS (PRIMARY)
-   ============================================================ */
-.sipus-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4375rem;
-    padding: 0.5625rem 1.125rem;
-    border-radius: var(--sipus-radius);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    white-space: nowrap;
-    line-height: 1.4;
-}
-
-.sipus-btn-primary {
-    background: var(--sipus-primary);
-    color: #ffffff;
-    box-shadow: 0 1px 3px rgba(76,29,149,0.3);
-}
-.sipus-btn-primary:hover {
-    background: var(--sipus-primary-light);
-    box-shadow: 0 4px 12px rgba(76,29,149,0.35);
-    transform: translateY(-1px);
-}
-
-.sipus-btn-danger {
-    background: #EF4444;
-    color: #ffffff;
-}
-.sipus-btn-danger:hover { background: #DC2626; transform: translateY(-1px); }
-
-.sipus-btn-outline {
-    background: transparent;
-    color: var(--sipus-primary);
-    border: 1.5px solid var(--sipus-primary);
-}
-.sipus-btn-outline:hover {
-    background: var(--sipus-primary-pale);
-}
-
-.sipus-btn-ghost {
-    background: transparent;
-    color: var(--sipus-text-muted);
-    border: 1.5px solid var(--sipus-border);
-}
-.sipus-btn-ghost:hover { background: #F9FAFB; color: var(--sipus-text); }
-
-.w-full { width: 100%; justify-content: center; }
-
-/* ============================================================
-   FORMS
-   ============================================================ */
-.sipus-form-card { padding: 2rem; }
-.sipus-form-narrow { max-width: 540px; }
-
-.sipus-form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-}
-
-.sipus-form-group { display: flex; flex-direction: column; gap: 0.375rem; }
-.sipus-form-group-full { grid-column: 1 / -1; }
-
-.sipus-label {
-    font-size: 0.8375rem;
-    font-weight: 600;
-    color: var(--sipus-text);
-}
-
-.sipus-required { color: #EF4444; }
-.sipus-optional { color: var(--sipus-text-muted); font-weight: 400; font-size: 0.8rem; }
-
-.sipus-input,
-.sipus-select,
-.sipus-textarea {
-    width: 100%;
-    padding: 0.5625rem 0.875rem;
-    border: 1.5px solid var(--sipus-border);
-    border-radius: var(--sipus-radius);
-    font-size: 0.9rem;
-    font-family: inherit;
-    color: var(--sipus-text);
-    background: var(--sipus-surface);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-}
-
-.sipus-input:focus,
-.sipus-select:focus,
-.sipus-textarea:focus {
-    border-color: var(--sipus-primary-light);
-    box-shadow: 0 0 0 3px rgba(109,40,217,0.1);
-}
-
-.sipus-input.is-invalid,
-.sipus-select.is-invalid,
-.sipus-textarea.is-invalid {
-    border-color: #EF4444;
-    box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
-}
-
-.sipus-textarea { resize: vertical; min-height: 110px; }
-.sipus-select { cursor: pointer; }
-
-.sipus-error {
-    font-size: 0.8rem;
-    color: #B91C1C;
-    font-weight: 500;
+.sipus-alert {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-}
-.sipus-error::before { content: '⚠ '; }
-
-.sipus-hint { font-size: 0.775rem; color: var(--sipus-text-muted); margin: 0; }
-
-.sipus-form-actions {
-    display: flex;
-    justify-content: flex-end;
     gap: 0.75rem;
-    margin-top: 1.75rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--sipus-border);
+    padding: 0.95rem 1.25rem;
+    border-radius: var(--sipus-radius);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.sipus-alert-success {
+    background: var(--sipus-success-bg);
+    color: var(--sipus-success);
+    border-color: #10B981;
+}
+
+.sipus-alert-error {
+    background: var(--sipus-danger-bg);
+    color: var(--sipus-danger);
+    border-color: #EF4444;
 }
 
 /* ============================================================
-   DETAIL LAYOUT
+   FOOTER (Academic style)
    ============================================================ */
-.sipus-detail-layout {
+.sipus-footer {
+    background: #1E1B4B;
+    color: #E2E8F0;
+    padding: 3.5rem 0 1.5rem;
+    margin-top: auto;
+    border-top: 4px solid var(--sipus-primary-light);
+}
+
+.sipus-footer-grid {
     display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 1.25rem;
-    align-items: start;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
 }
 
-.sipus-detail-main {}
-
-.sipus-detail-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.25rem;
-    border-bottom: 1px solid var(--sipus-border);
+.sipus-footer-brand-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 0.5rem;
 }
 
-.sipus-detail-book-icon {
-    width: 72px;
-    height: 72px;
-    background: var(--sipus-primary-pale);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--sipus-primary);
-    flex-shrink: 0;
-}
-
-.sipus-detail-tag-icon {
-    background: #EDE9FE;
-    color: var(--sipus-primary);
-}
-
-.sipus-detail-title {
-    font-size: 1.3125rem;
-    font-weight: 700;
-    color: var(--sipus-text);
-    margin: 0 0 0.375rem;
-    line-height: 1.3;
-}
-
-.sipus-detail-penulis {
-    font-size: 0.9rem;
-    color: var(--sipus-text-muted);
-    margin: 0 0 0.625rem;
-}
-
-.sipus-detail-badges { display: flex; gap: 0.375rem; flex-wrap: wrap; }
-
-/* Info grid */
-.sipus-info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    background: #FAFAFA;
-    border: 1px solid var(--sipus-border);
-    border-radius: var(--sipus-radius);
-    padding: 1.125rem;
-}
-
-.sipus-info-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--sipus-text-muted);
-    margin-bottom: 0.25rem;
-}
-
-.sipus-info-value {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--sipus-text);
-}
-
-.sipus-mono { font-family: 'Courier New', monospace; font-size: 0.85rem; }
-
-/* Sinopsis */
-.sipus-sinopsis {
-    margin-top: 1.25rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--sipus-border);
-}
-
-.sipus-sinopsis-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--sipus-text-muted);
-    margin-bottom: 0.625rem;
-}
-
-.sipus-sinopsis-text {
-    font-size: 0.925rem;
-    color: var(--sipus-text);
-    line-height: 1.75;
-    margin: 0;
-}
-
-/* Sidebar */
-.sipus-detail-sidebar {}
-
-.sipus-sidebar-title {
+.sipus-footer-brand-desc {
     font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--sipus-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0 0 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--sipus-border);
+    color: #94A3B8;
+    line-height: 1.65;
+    margin: 0 0 1.25rem;
 }
 
-.sipus-sidebar-actions {
+.sipus-footer-col-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #CBD5E1;
+    margin: 0 0 1rem;
+}
+
+.sipus-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
+    gap: 0.6rem;
 }
 
-/* ============================================================
-   PAGINATION
-   ============================================================ */
-.sipus-pagination {
-    padding: 1rem 0 0;
-    margin-top: 0.75rem;
-    border-top: 1px solid var(--sipus-border);
+.sipus-footer-links a {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.15s;
+}
+
+.sipus-footer-links a:hover {
+    color: #ffffff;
+}
+
+.sipus-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
     display: flex;
-    justify-content: center;
-}
-
-/* Override Laravel's default pagination */
-.sipus-pagination nav > div:first-child { display: none; }
-
-.sipus-pagination nav > div:last-child span,
-.sipus-pagination nav > div:last-child a {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0.375rem 0.75rem !important;
-    margin: 0 0.125rem !important;
-    border-radius: 6px !important;
-    font-size: 0.875rem !important;
-    font-weight: 500 !important;
-    text-decoration: none !important;
-    transition: all 0.15s !important;
-    border: 1px solid var(--sipus-border) !important;
-    color: var(--sipus-text) !important;
-    background: white !important;
-}
-
-.sipus-pagination nav > div:last-child a:hover {
-    background: var(--sipus-primary-pale) !important;
-    border-color: var(--sipus-primary-light) !important;
-    color: var(--sipus-primary) !important;
-}
-
-.sipus-pagination nav > div:last-child span[aria-current="page"] {
-    background: var(--sipus-primary) !important;
-    border-color: var(--sipus-primary) !important;
-    color: white !important;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #94A3B8;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 /* ============================================================
@@ -816,144 +1327,105 @@ body.sipus-body {
    ============================================================ */
 .sipus-empty-state {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 3.5rem 1.5rem;
     color: var(--sipus-text-muted);
 }
 
 .sipus-empty-state svg {
-    display: block;
     margin: 0 auto 1rem;
-    color: #D1D5DB;
+    color: #CBD5E1;
+}
+
+.sipus-empty-state h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--sipus-text);
+    margin: 0 0 0.4rem;
 }
 
 .sipus-empty-state p {
-    margin: 0 0 1rem;
     font-size: 0.9rem;
-}
-
-.sipus-empty-state a { color: var(--sipus-primary-light); text-decoration: underline; }
-
-/* ============================================================
-   LINKS
-   ============================================================ */
-.sipus-link {
-    color: var(--sipus-primary-light);
-    text-decoration: none;
-    font-weight: 600;
-}
-.sipus-link:hover { text-decoration: underline; }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.sipus-footer {
-    background: var(--sipus-primary-dark);
-    color: rgba(255,255,255,0.6);
-    padding: 1.25rem 1.5rem;
-    margin-top: auto;
-}
-
-.sipus-footer-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.sipus-footer-inner p {
-    margin: 0;
-    font-size: 0.825rem;
-}
-
-.sipus-footer-inner strong { color: rgba(255,255,255,0.85); }
-
-.sipus-footer-sub {
-    font-size: 0.75rem !important;
-    margin-top: 0.25rem !important;
-    color: rgba(255,255,255,0.4) !important;
+    margin: 0 0 1.25rem;
 }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE DESIGN (Breakpoints)
    ============================================================ */
-@media (max-width: 900px) {
-    .sipus-detail-layout {
+@media (max-width: 992px) {
+    .sipus-catalog-layout {
         grid-template-columns: 1fr;
     }
 
-    .sipus-detail-sidebar {
-        order: -1;
+    .sipus-filter-card {
+        position: static;
     }
 
-    .sipus-sidebar-actions {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .sipus-sidebar-actions .sipus-btn {
-        flex: 1;
-    }
-
-    .sipus-info-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .sipus-footer-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    :root { --sipus-nav-height: 56px; }
+    .sipus-header-container {
+        grid-template-columns: 1fr auto;
+    }
 
-    .sipus-main { padding: 1.25rem 1rem; }
-
-    .sipus-navbar-container { padding: 0 1rem; gap: 0; }
-
-    .sipus-nav-toggle { display: flex; }
-
-    .sipus-nav-links {
+    .sipus-nav-center {
         display: none;
-        position: absolute;
-        top: var(--sipus-nav-height);
-        left: 0;
-        right: 0;
-        background: var(--sipus-primary-dark);
+    }
+
+    .sipus-header-right {
+        display: none;
+    }
+
+    .sipus-mobile-toggle {
+        display: block;
+    }
+
+    .sipus-hero-title {
+        font-size: 2rem;
+    }
+
+    .sipus-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sipus-footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Mobile Drawer */
+    .sipus-mobile-menu {
+        display: none;
+        background: #ffffff;
+        border-bottom: 1px solid var(--sipus-border);
+        padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .sipus-mobile-menu.open {
+        display: block;
+    }
+
+    .sipus-mobile-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1rem;
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
-        padding: 0.75rem;
-        gap: 0.25rem;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        gap: 0.5rem;
     }
 
-    .sipus-nav-links.open { display: flex; }
-
-    .sipus-nav-link { padding: 0.75rem 1rem; }
-
-    .sipus-welcome-card {
-        flex-direction: column;
-        padding: 1.5rem;
+    .sipus-mobile-nav-link {
+        display: block;
+        padding: 0.65rem 0.85rem;
+        border-radius: var(--sipus-radius-sm);
+        color: var(--sipus-text);
+        text-decoration: none;
+        font-weight: 600;
     }
 
-    .sipus-welcome-icon { width: 52px; height: 52px; }
-
-    .sipus-form-grid { grid-template-columns: 1fr; }
-    .sipus-form-group-full { grid-column: 1; }
-
-    .sipus-page-header { flex-direction: column; align-items: flex-start; }
-
-    .sipus-stats-grid { grid-template-columns: repeat(2, 1fr); }
-
-    .sipus-table-responsive {
-        margin: -1.375rem -1rem;
-        padding: 0 1rem;
+    .sipus-mobile-nav-link.active {
+        background: var(--sipus-primary-pale);
+        color: var(--sipus-primary);
     }
-
-    .sipus-detail-header { flex-direction: column; }
-
-    .sipus-info-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 480px) {
-    .sipus-stats-grid { grid-template-columns: 1fr; }
-    .sipus-info-grid { grid-template-columns: 1fr; }
-    .sipus-form-actions { flex-direction: column-reverse; }
-    .sipus-form-actions .sipus-btn { width: 100%; justify-content: center; }
-    .sipus-welcome-actions { flex-direction: column; }
-    .sipus-welcome-actions .sipus-btn { width: 100%; justify-content: center; }
 }
