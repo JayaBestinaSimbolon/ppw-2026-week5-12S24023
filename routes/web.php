@@ -4,9 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\TurnitinController;
+use App\Http\Controllers\Soap\LibrarySoapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,12 +28,10 @@ Route::get('/buku/{buku}', [BukuController::class, 'show'])->name('buku.show');
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 Route::get('/kategori/{kategori}', [KategoriController::class, 'show'])->name('kategori.show');
 
-// Layanan Informasi & Pengajuan Turnitin
-Route::get('/layanan', [LayananController::class, 'index'])->name('layanan.index');
-Route::get('/layanan/bantuan', [LayananController::class, 'bantuan'])->name('layanan.bantuan');
-Route::get('/tentang', [LayananController::class, 'tentang'])->name('tentang');
-Route::get('/turnitin', [TurnitinController::class, 'index'])->name('turnitin.index');
-Route::post('/turnitin', [TurnitinController::class, 'store'])->name('turnitin.store');
+// Halaman Informasi Umum (Opsional)
+Route::get('/tentang', function () {
+    return view('tentang');
+})->name('tentang');
 
 // Autentikasi Pustakawan
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -66,3 +63,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/peminjaman/kembali-by-kode', [PeminjamanController::class, 'kembaliByKode'])->name('peminjaman.kembaliByKode');
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
 });
+
+// =========================================================================
+// 3. RUTE LAYANAN SOAP LEGACY (Bebas Pustaka Yudisium)
+// =========================================================================
+Route::get('/soap/sipus.wsdl', [LibrarySoapController::class, 'wsdl']);
+Route::post('/soap/sipus', [LibrarySoapController::class, 'handle']);
+
+// =========================================================================
+// 4. RUTE DUMMY PENGAMAN TAMPILAN (Agar View lama tidak error)
+// =========================================================================
+Route::get('/layanan', function () {
+    return redirect()->route('dashboard');
+})->name('layanan.index');
+
+Route::get('/layanan/bantuan', function () {
+    return redirect()->route('dashboard');
+})->name('layanan.bantuan');
+
+Route::get('/turnitin', function () {
+    return redirect()->route('dashboard');
+})->name('turnitin.index');

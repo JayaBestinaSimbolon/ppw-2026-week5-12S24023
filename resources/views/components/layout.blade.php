@@ -32,11 +32,8 @@
                 </span>
             </div>
             <div class="sipus-topbar-right">
-                <a href="{{ route('turnitin.index') }}" class="sipus-topbar-item">
-                    Layanan Cek Turnitin Del
                 </a>
                 <span style="opacity: 0.4;">|</span>
-                <a href="{{ route('layanan.bantuan') }}" class="sipus-topbar-item">
                     Bantuan Katalog
                 </a>
             </div>
@@ -89,15 +86,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('layanan.index') }}"
-                           class="sipus-nav-link {{ request()->routeIs('layanan.*') || request()->routeIs('turnitin.*') ? 'active' : '' }}">
-                            Layanan
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('tentang') }}"
-                           class="sipus-nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">
-                            Tentang Kami
                         </a>
                     </li>
                 </ul>
@@ -154,9 +145,6 @@
                 <li><a href="{{ route('katalog') }}" class="sipus-mobile-nav-link {{ request()->routeIs('katalog') ? 'active' : '' }}">Katalog Buku</a></li>
                 <li><a href="{{ route('kategori.index') }}" class="sipus-mobile-nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}">Kategori</a></li>
                 <li><a href="{{ route('peminjaman.index') }}" class="sipus-mobile-nav-link {{ request()->routeIs('peminjaman.*') ? 'active' : '' }}">Sirkulasi Peminjaman</a></li>
-                <li><a href="{{ route('layanan.index') }}" class="sipus-mobile-nav-link {{ request()->routeIs('layanan.*') ? 'active' : '' }}">Layanan Perpustakaan</a></li>
-                <li><a href="{{ route('turnitin.index') }}" class="sipus-mobile-nav-link {{ request()->routeIs('turnitin.*') ? 'active' : '' }}">Pengajuan Cek Turnitin</a></li>
-                <li><a href="{{ route('tentang') }}" class="sipus-mobile-nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang Kami</a></li>
                 @auth
                     <li><a href="{{ route('buku.index', ['view' => 'manage']) }}" class="sipus-mobile-nav-link">Kelola Koleksi (Admin)</a></li>
                     <li>
@@ -226,19 +214,14 @@
                         <li><a href="{{ route('dashboard') }}">Beranda</a></li>
                         <li><a href="{{ route('katalog') }}">Katalog Buku</a></li>
                         <li><a href="{{ route('kategori.index') }}">Kategori Koleksi</a></li>
-                        <li><a href="{{ route('layanan.index') }}">Layanan Perpustakaan</a></li>
-                        <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="sipus-footer-col-title">Layanan</h4>
                     <ul class="sipus-footer-links">
-                        <li><a href="{{ route('turnitin.index') }}">Pengajuan Cek Turnitin</a></li>
                         <li><a href="{{ route('katalog') }}">Pencarian Katalog</a></li>
                         <li><a href="{{ route('katalog', ['lantai' => 1]) }}">Koleksi Lantai 1 (Buku Teks)</a></li>
                         <li><a href="{{ route('katalog', ['lantai' => 2]) }}">Koleksi Lantai 2 (Skripsi)</a></li>
-                        <li><a href="{{ route('layanan.bantuan') }}">Bantuan & Tata Tertib</a></li>
                     </ul>
                 </div>
 
