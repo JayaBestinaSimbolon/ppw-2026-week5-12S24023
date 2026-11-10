@@ -37,3 +37,11 @@ Route::prefix('v1')->group(function () {
     });
 
 });
+
+use App\Http\Controllers\AuthController; // Sesuaikan dengan lokasi controller login Anda
+
+Route::post('/login', [AuthController::class, 'login']);
+
+use App\Http\Controllers\KatalogController; // Sesuaikan dengan Controller Anda
+
+Route::get('/katalog', [KatalogController::class, 'index']);
