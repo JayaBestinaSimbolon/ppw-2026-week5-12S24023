@@ -18,22 +18,23 @@ class LibrarySoapController extends Controller
         $wsdlXml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="LibrarySoapService"
-    targetNamespace="http://sipus.del.ac.id/soap/library"
-    xmlns:tns="http://sipus.del.ac.id/soap/library"
-    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns="http://schemas.xmlsoap.org/wsdl/">
-
+             targetNamespace="http://sipus.del.ac.id/soap/library"
+             xmlns:tns="http://sipus.del.ac.id/soap/library"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+    
+    <!-- Message: Spesifikasi parameter input dan output -->
     <message name="CheckClearanceStatusRequest">
         <part name="nim_peminjam" type="xsd:string"/>
     </message>
-
     <message name="CheckClearanceStatusResponse">
         <part name="nim_peminjam" type="xsd:string"/>
         <part name="active_loans" type="xsd:int"/>
         <part name="is_cleared" type="xsd:boolean"/>
     </message>
 
+    <!-- PortType: Daftar operasi (method) yang disediakan -->
     <portType name="LibraryPortType">
         <operation name="CheckClearanceStatus">
             <input message="tns:CheckClearanceStatusRequest"/>
@@ -41,6 +42,7 @@ class LibrarySoapController extends Controller
         </operation>
     </portType>
 
+    <!-- Binding: Mengikat operasi ke protokol SOAP over HTTP -->
     <binding name="LibrarySoapBinding" type="tns:LibraryPortType">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
         <operation name="CheckClearanceStatus">
@@ -50,6 +52,7 @@ class LibrarySoapController extends Controller
         </operation>
     </binding>
 
+    <!-- Service: Alamat URL fisik tempat endpoint SOAP berada -->
     <service name="LibrarySoapService">
         <port name="LibraryPort" binding="tns:LibrarySoapBinding">
             <soap:address location="{$endpointUrl}"/>
@@ -80,32 +83,37 @@ XML;
             return $this->soapFault('soap:Client', 'Format XML tidak valid (Malformed XML).');
         }
 
-        // Ambil elemen <nim_peminjam> di dalam <soap:Body>
+        // Ambil nilai tag <nim_peminjam> di dalam <soap:Body>
         $nimNodes = $xml->xpath('//*[local-name()="CheckClearanceStatusRequest"]/*[local-name()="nim_peminjam"]');
-
+        
         if (empty($nimNodes)) {
             return $this->soapFault(
-                'soap:Client',
-                'Elemen <nim_peminjam> tidak ditemukan pada CheckClearanceStatusRequest.'
+                'soap:Client', 
+                'Elemen <nim_peminjam> tidak ditemukan pada permintaan SOAP.'
             );
         }
 
         $nim = trim((string) $nimNodes[0]);
 
+        // ⭐ VALIDASI UTAMA: Jika NIM kosong, lempar SOAP Fault (Status 500)
         if (empty($nim)) {
-            return $this->soapFault('soap:Client', 'Nilai <nim_peminjam> tidak boleh kosong.');
+            return $this->soapFault(
+                'soap:Client', 
+                'Nilai NIM peminjam tidak boleh kosong.'
+            );
         }
 
-        // Hitung buku yang masih dipinjam oleh NIM tersebut di tabel peminjamans
-        $activeLoans = DB::table('peminjamans')
+        // Cek jumlah pinjaman aktif buku dari tabel peminjamans (status 'dipinjam')
+        $activeLoansCount = DB::table('peminjamans')
             ->where('nim_peminjam', $nim)
             ->where('status', 'dipinjam')
             ->count();
 
-        // Bebas Pustaka (is_cleared) = true jika pinjaman aktif == 0
-        $isCleared = ($activeLoans === 0) ? 'true' : 'false';
+        $isCleared = ($activeLoansCount === 0);
+
         $safeNim = htmlspecialchars($nim, ENT_XML1, 'UTF-8');
 
+        // Bungkus hasil di dalam amplop resmi <soap:Envelope> & <soap:Body>
         $responseXml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -116,7 +124,7 @@ XML;
     <soap:Body>
         <m:CheckClearanceStatusResponse>
             <m:nim_peminjam>{$safeNim}</m:nim_peminjam>
-            <m:active_loans>{$activeLoans}</m:active_loans>
+            <m:active_loans>{$activeLoansCount}</m:active_loans>
             <m:is_cleared>{$isCleared}</m:is_cleared>
         </m:CheckClearanceStatusResponse>
     </soap:Body>
@@ -128,11 +136,12 @@ XML;
     }
 
     /**
-     * Helper pembentuk pesan kesalahan standar protokol SOAP (<soap:Fault>)
+     * 3. Helper pembentuk pesan kesalahan standar protokol SOAP (<soap:Fault>)
      */
     private function soapFault(string $faultCode, string $faultMessage): Response
     {
         $safeMsg = htmlspecialchars($faultMessage, ENT_XML1, 'UTF-8');
+        
         $faultXml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
