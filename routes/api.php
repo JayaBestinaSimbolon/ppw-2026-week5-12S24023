@@ -26,3 +26,8 @@ Route::prefix('v1')->group(function () {
     // Rute Buku (GET, POST, PUT, PATCH, DELETE)
     Route::apiResource('bukus', BukuController::class);
 });
+
+use App\Http\Controllers\Api\AuthController; // Sesuaikan dengan controller auth Anda
+
+// Tambahkan rute login ini di dalam routes/api.php
+Route::post('/v1/login', [AuthController::class, 'login']);
