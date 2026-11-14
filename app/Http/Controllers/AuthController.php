@@ -1,59 +1,64 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    /**
-     * Memproses otentikasi login API & menghasilkan Bearer Token Sanctum.
-     */
-    public function login(Request $request)
+    public function showLoginForm(Request $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        // Validasi kecocokan email dan password
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Kredensial login tidak valid. Pastikan email dan password Anda benar.'
-            ], 401);
+        if (Auth::check()) {
+            return redirect()->route('katalog')->with('info', 'Anda sudah berada dalam sesi aktif.');
         }
 
-        // Hapus token lama (opsional, agar bersih) atau buat token baru
-        $token = $user->createToken('AuthToken')->plainTextToken;
+        $savedEmail = $request->cookie('del_last_user_email', '');
 
-        return response()->json([
-            'message'      => 'Login berhasil. Selamat datang kembali, ' . $user->name . '!',
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => [
-                'id'    => $user->id,
-                'name'  => $user->name,
-                'email' => $user->email,
-            ]
-        ], 200);
+        return view('auth.login', compact('savedEmail'));
     }
 
-    /**
-     * Memproses logout API (menghapus token aktif).
-     */
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ], [
+            'email.required'    => 'Alamat email wajib diisi.',
+            'email.email'       => 'Format email tidak valid.',
+            'password.required' => 'Kata sandi wajib diisi.',
+        ]);
+
+        $remember = $request->boolean('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+
+            session([
+                'login_timestamp'  => now()->format('d M Y, H:i:s') . ' WIB',
+                'pustakawan_name'  => Auth::user()->name,
+                'pustakawan_email' => Auth::user()->email,
+            ]);
+
+            Cookie::queue('del_last_user_email', $request->email, 10080);
+
+            return redirect()->intended(route('katalog'))
+                ->with('success', 'Sesi Anda telah aktif. Selamat datang kembali, ' . Auth::user()->name . '!');
+        }
+
+        return back()
+            ->withInput($request->only('email', 'remember'))
+            ->with('error', 'Kredensial login tidak valid. Pastikan email dan password Anda benar.');
+    }
+
     public function logout(Request $request)
     {
-        // Menghapus token yang sedang digunakan saat request
-        $request->user()->currentAccessToken()->delete();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return response()->json([
-            'message' => 'Token akses berhasil dicabut (Logout berhasil).'
-        ], 200);
+        return redirect()->route('login')
+            ->with('success', 'Sesi server telah dihapus dengan aman.');
     }
 }
